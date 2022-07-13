@@ -70,8 +70,8 @@
       </property>
       <property name="font">
        <font>
-        <family>Comic Sans MS</family>
-        <bold>true</bold>
+        <family>Ubuntu</family>
+        <pointsize>11</pointsize>
        </font>
       </property>
       <property name="text">
@@ -92,8 +92,8 @@
       </property>
       <property name="font">
        <font>
-        <family>Comic Sans MS</family>
-        <bold>true</bold>
+        <family>Ubuntu</family>
+        <pointsize>11</pointsize>
        </font>
       </property>
       <property name="text">
@@ -111,8 +111,8 @@
       </property>
       <property name="font">
        <font>
-        <family>Comic Sans MS</family>
-        <bold>true</bold>
+        <family>Ubuntu</family>
+        <pointsize>11</pointsize>
        </font>
       </property>
       <property name="text">
@@ -309,7 +309,8 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
+        <family>Ubuntu</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
@@ -327,7 +328,8 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
+        <family>Ubuntu</family>
+        <pointsize>9</pointsize>
        </font>
       </property>
       <property name="text">
@@ -364,7 +366,8 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
+        <family>Ubuntu</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
@@ -385,7 +388,8 @@
       </property>
       <property name="font">
        <font>
-        <family>Arial</family>
+        <family>Ubuntu</family>
+        <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">

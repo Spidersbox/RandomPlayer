@@ -234,6 +234,13 @@ void EditForm::bt_save_clicked()
   if (filename.isEmpty())
     return;
 
+  // check for extension
+  // windows will add the extension
+  // ubuntu will not
+  int x=filename.indexOf("m3u");
+  if(x<1)
+    filename=filename+".m3u";
+
   QFile file(filename);
   //Open the file
   if (!file.open(QIODevice::WriteOnly | QIODevice::Text))
