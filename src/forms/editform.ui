@@ -18,7 +18,7 @@
   </property>
   <property name="font">
    <font>
-    <family>Ubuntu</family>
+    <family>Arial</family>
    </font>
   </property>
   <property name="windowTitle">
@@ -310,8 +310,6 @@
       <property name="font">
        <font>
         <family>Arial</family>
-        <pointsize>9</pointsize>
-        <bold>false</bold>
        </font>
       </property>
       <property name="text">
