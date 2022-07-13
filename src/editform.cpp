@@ -32,6 +32,7 @@ EditForm::EditForm(QWidget *parent) :
 
   /** setup dir tree */
   QString mPath="/";
+  mPath="~/";
   /** Dirs */
   dirModel = new QFileSystemModel(this);
   // Set filter
