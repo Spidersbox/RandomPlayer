@@ -301,11 +301,18 @@
      <widget class="QLabel" name="label_3">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>50</y>
-        <width>221</width>
-        <height>16</height>
+        <width>231</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+        <pointsize>9</pointsize>
+        <bold>false</bold>
+       </font>
       </property>
       <property name="text">
        <string>This will save your current playlist</string>
@@ -314,11 +321,16 @@
      <widget class="QLabel" name="label_4">
       <property name="geometry">
        <rect>
-        <x>20</x>
+        <x>10</x>
         <y>70</y>
-        <width>221</width>
-        <height>16</height>
+        <width>231</width>
+        <height>20</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
       </property>
       <property name="text">
        <string>or you can save it later in the player.</string>
@@ -352,6 +364,11 @@
         <height>51</height>
        </rect>
       </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
+      </property>
       <property name="text">
        <string>When you exit this editor, your new playlist we be updated,</string>
       </property>
@@ -365,8 +382,13 @@
         <x>0</x>
         <y>170</y>
         <width>231</width>
-        <height>21</height>
+        <height>41</height>
        </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Arial</family>
+       </font>
       </property>
       <property name="text">
        <string>- but will NOT be automatically saved.</string>
