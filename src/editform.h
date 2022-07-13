@@ -16,7 +16,7 @@ class EditForm : public QWidget
     Q_OBJECT
 
 public:
-    explicit EditForm(QWidget *parent = nullptr);
+    explicit EditForm(QWidget *parent =0);
     ~EditForm();
 
     QStringList playlist;
