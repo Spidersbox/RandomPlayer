@@ -31,7 +31,7 @@ EditForm::EditForm(QWidget *parent) :
   connect(ui->comboBox,&QComboBox::currentTextChanged, this,&EditForm::on_driveChanged);
 
   /** setup dir tree */
-  QString mPath="/home";
+  QString mPath="/";
   /** Dirs */
   dirModel = new QFileSystemModel(this);
   // Set filter

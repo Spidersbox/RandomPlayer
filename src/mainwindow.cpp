@@ -22,14 +22,24 @@ MainWindow::MainWindow(QWidget *parent)
   resize(680, 540);
   setWindowTitle(tr("Random Player"));
 
-  // Create the toolbars
+#ifndef Q_OS_MAC
+    qApp->setWindowIcon(QIcon(":icons/RandomPlayer"));
+    setWindowIcon(QIcon(":icons/RandomPlayer"));
+#else
+    setUnifiedTitleAndToolBarOnMac(true);
+    QApplication::setAttribute(Qt::AA_DontShowIconsInMenus);
+#endif
+
+  /** Create the toolbars */
   createToolBars();
 
-  // Create actions for the toolbar, menu bar and tray/dock icon
+  /** Create actions for the toolbar, menu bar and tray/dock icon */
   createActions();
 
-  // Create application menu bar
+  /** Create application menu bar */
   createMenuBar();
+  /** menubar on form instead */
+  menuBar()->setNativeMenuBar(false);
 
 
 }
@@ -43,14 +53,15 @@ MainWindow::~MainWindow()
 void MainWindow::createMenuBar()
 {
 #ifdef Q_OS_MAC
-  // Create a decoupled menu bar on Mac which stays even if the window is closed
+  /** Create a decoupled menu bar on Mac */
+  /** which stays even if the window is closed */
   appMenuBar = new QMenuBar();
 #else
-  // Get the main window's menu bar on other platforms
+  /** Get the main window's menu bar on other platforms */
   appMenuBar = menuBar();
 #endif
 
-  // Configure the menus
+  /** Configure the menus */
   QMenu *file = appMenuBar->addMenu(tr("&File"));
   file->addAction(openAction);
   file->addAction(quitAction);
