@@ -29,11 +29,6 @@ public:
   /** for loading,saving and editing */
   QStringList playlist;
 
-  /** player button status */
-  //  0 stopped
-  //  1 play
-  //  2 paused
-  int bt_status;
 
 private:
   Ui::MainWindow *ui;

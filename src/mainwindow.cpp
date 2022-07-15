@@ -5,6 +5,7 @@
 #include <QFileDialog>
 #include <QFile>
 #include <QTextStream>
+#include <QDesktopWidget>
 
 #include <QMessageBox> // for debuging
 #include <QDebug>
@@ -19,8 +20,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
   ui->setupUi(this);
-  resize(680, 540);
+  resize(680, 570);
   setWindowTitle(tr("Random Player"));
+
+  QRect desktopRect = QApplication::desktop()->availableGeometry(this);
+  QPoint center = desktopRect.center();
+  move(center.x() - width() * 0.5, center.y() - height() * 0.5);
 
 
 #ifndef Q_OS_MAC
@@ -46,10 +51,7 @@ MainWindow::MainWindow(QWidget *parent)
 #if QT_VERSION >= 0x050700
   audioOutput = new QAudioOutput;
   player->setAudioOutput(audioOutput);
-#else
-//player->setMedia(QUrl(filename));
 #endif
-  // ...
 
   connect(player,SIGNAL(positionChanged(qint64)) ,this,SLOT(on_positionChanged(qint64)));
   connect(player,SIGNAL(durationChanged(qint64)) ,this,SLOT(on_durationChanged(qint64)));
@@ -64,7 +66,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 void MainWindow::createMenuBar()
 {
 #ifdef Q_OS_MAC
@@ -91,39 +93,34 @@ void MainWindow::createMenuBar()
   settings->addAction(loopAction);
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 void MainWindow::createToolBars()
 {
   playButton = new QPushButton(this);
-  playButton->setStyleSheet( "*{border-image: url(:/images/bt_play); width: 16px; height: 16px;}"
-                             ":hover{ border-image: url(:/images/bt_play_hover);}");
+  playButton->setStyleSheet( "*{border-image: url(:/images/bt_play); width:32px; height:32px;}" ":hover{ border-image: url(:/images/bt_play_hover);}");
   playButton->setEnabled(true);
 
   pauseButton = new QPushButton(this);
-  pauseButton->setStyleSheet("*{border-image: url(:/images/bt_pause); width: 16px; height: 16px;}"
-                             ":hover{ border-image: url(:/images/bt_pause_hover);}");
+  pauseButton->setStyleSheet("*{border-image: url(:/images/bt_pause); width:32px; height: 32px;}" ":hover{ border-image: url(:/images/bt_pause_hover);}");
   pauseButton->setEnabled(true);
 
   stopButton = new QPushButton(this);
-  stopButton->setStyleSheet("*{border-image:url(:/images/bt_stop); width: 16px; height: 16px;}"
-                            ":hover{ border-image: url(:/images/bt_stop_hover);}");
+  stopButton->setStyleSheet("*{border-image:url(:/images/bt_stop); width:32px; height:32px;}" ":hover{ border-image: url(:/images/bt_stop_hover);}");
   stopButton->setEnabled(true);
 
   nextButton = new QPushButton(this);
-  nextButton->setStyleSheet("*{border-image:url(:/images/bt_next); width: 16px; height: 16px;}"
-                            ":hover{ border-image: url(:/images/bt_next_hover);}");
+  nextButton->setStyleSheet("*{border-image:url(:/images/bt_next); width:32px; height:32px;}" ":hover{ border-image: url(:/images/bt_next_hover);}");
   nextButton->setEnabled(true);
 
   previousButton = new QPushButton(this);
-  previousButton->setStyleSheet("*{border-image:url(:/images/bt_previous); width: 16px; height: 16px;}"
-                                ":hover{ border-image: url(:/images/bt_previous_hover);}");
+  previousButton->setStyleSheet("*{border-image:url(:/images/bt_previous);width:32px; height:32px;}" ":hover{ border-image: url(:/images/bt_previous_hover);}");
   previousButton->setEnabled(true);
 
   progressBar = new QSlider(Qt::Horizontal,this);
 
   label_length= new QLabel(this);
   label_length->setStyleSheet("font-size: 9px;");
-  label_length->setText("test message");
+  label_length->setText("0:00/0:00");
 
   horizontalGroupBox = new QGroupBox;
   progressGroupBox = new QGroupBox;
@@ -149,12 +146,10 @@ void MainWindow::createToolBars()
 
   ui->mainLayout->addWidget(horizontalGroupBox);
   ui->mainLayout->addWidget(progressGroupBox);
-//  ui->mainLayout->addWidget(progressBar);
-//  ui->mainLayout->addWidget(label_length);
 
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 void MainWindow::createActions()
 {
   /** main menu actions */
@@ -179,12 +174,6 @@ void MainWindow::createActions()
   loopAction->setToolTip(tr("repeat playing in a loop"));
   loopAction->setCheckable(true);
 
-  /** player toolbar actions */
-//  playAction = new QAction;
-//  pauseAction = new QAction;
-//  stopAction = new QAction;
-//  nextAction = new QAction;
-//  previousAction = new QAction;
 
 
   /** main menu signals */
@@ -198,21 +187,16 @@ void MainWindow::createActions()
   connect(loopAction, SIGNAL(triggered()), this, SLOT(loopClicked()));
 
   /** player toolbar signals */
-//  connect(playAction, SIGNAL(triggered()), this, SLOT(playClicked()));
   connect(playButton, &QAbstractButton::clicked, this, &MainWindow::playClicked);
-//  connect(pauseAction, SIGNAL(triggered()), this, SLOT(pauseClicked()));
   connect(pauseButton, &QAbstractButton::clicked, this, &MainWindow::pauseClicked);
-//  connect(stopAction, SIGNAL(triggered()), this, SLOT(stopClicked()));
   connect(stopButton, &QAbstractButton::clicked, this, &MainWindow::stopClicked);
-//  connect(nextAction, SIGNAL(triggered()), this, SLOT(nextClicked()));
   connect(nextButton, &QAbstractButton::clicked, this, &MainWindow::nextClicked);
-//  connect(previousAction, SIGNAL(triggered()), this, SLOT(previousClicked()));
   connect(previousButton, &QAbstractButton::clicked, this, &MainWindow::previousClicked);
 
 }
 
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** Show open file dialog */
 void MainWindow::openClicked()
 {
@@ -248,14 +232,14 @@ void MainWindow::openClicked()
   }
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** exit this app */
 void MainWindow::quitClicked()
 {
   qApp->quit();
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** Open playlist editor dialog */
 void MainWindow::editClicked()
 {
@@ -268,7 +252,7 @@ void MainWindow::editClicked()
 
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** recieves playlist from editor */
 void MainWindow::printData(QStringList dat)
 {
@@ -280,7 +264,7 @@ void MainWindow::printData(QStringList dat)
 }
 
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** save playlist to a file */
 void MainWindow::saveClicked()
 {
@@ -307,7 +291,7 @@ void MainWindow::saveClicked()
   file.close();
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** randomize now trigger */
 void MainWindow::randomClicked()
 {
@@ -337,7 +321,7 @@ void MainWindow::randomClicked()
   loadPlayer();
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** toggle randomizer switch */
 void MainWindow::randomizerClicked()
 {
@@ -345,53 +329,41 @@ void MainWindow::randomizerClicked()
 
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** toggle play loop switch */
 void MainWindow::loopClicked()
 {
 //  QMessageBox::warning(this,"Random Player","the loop switch was triggered");
-
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** play button */
 void MainWindow::playClicked()
 {
-//  QMessageBox::warning(this,"Random Player","play button pressed");
-  playButton->setStyleSheet( "*{border-image: url(:/images/bt_play_hover); width: 16px; height: 16px;}"
-                             ":hover{ border-image: url(:/images/bt_play_hover);}");
-  bt_status=1;
-//player->play();
-//player->setSource(QUrl::fromLocalFile("F:/MP3/boston/Boston - Carry on My Wayward Son.mp3"));
-//audioOutput->setVolume(50);
-player->play();
+  playButton->setStyleSheet( "*{border-image: url(:/images/bt_play_hover); width:32px; height:32px;}" ":hover{ border-image: url(:/images/bt_play_hover);}");
+  player->play();
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** pause button */
 void MainWindow::pauseClicked()
 {
-  QMessageBox::warning(this,"Random Player","pause button pressed");
-
+//  QMessageBox::warning(this,"Random Player","pause button pressed");
+player->pause();
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** stop button */
 void MainWindow::stopClicked()
 {
-player->stop();
-//  QMessageBox::warning(this,"Random Player","stop button pressed");
-  playButton->setStyleSheet( "*{border-image: url(:/images/bt_play); width: 16px; height: 16px;}"
-                             ":hover{ border-image: url(:/images/bt_play_hover);}");
-bt_status=0;
+  player->stop();
+  playButton->setStyleSheet( "*{border-image: url(:/images/bt_play); width:32px; height: 32px;}" ":hover{ border-image: url(:/images/bt_play_hover);}");
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** next button */
 void MainWindow::nextClicked()
 {
-//  QMessageBox::warning(this,"Random Player","next button pressed");
-//  player->stop();
     stopClicked();
 
   if(ui->listWidget->count() >1)
@@ -414,19 +386,38 @@ player->setMedia(QUrl::fromLocalFile(filename));
     QListWidgetItem *item = ui->listWidget->takeItem(0);
     ui->listWidget2->addItem(item->text());
     delete item;
-// trigger loop now
+
+    // move list from listwidget2 to listwidget
+    while(ui->listWidget2->count())
+    {
+      QListWidgetItem *item = ui->listWidget2->takeItem(0);
+      ui->listWidget->addItem(item->text());
+      delete item;
+    }
+    loadPlayer();
+
+    // trigger loop now
+    if(loopAction->isChecked())
+    {
+      if(randomizerAction->isChecked())
+      {
+        randomClicked();
+      }
+      playClicked();
+    }
   }
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** previous button */
+/** seek to beginning */
 void MainWindow::previousClicked()
 {
-  QMessageBox::warning(this,"Random Player","previous button pressed");
-
+  player->stop();
+  player->play();
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 /** load the player with the first song */
 void MainWindow::loadPlayer()
 {
@@ -438,22 +429,21 @@ void MainWindow::loadPlayer()
  #if QT_VERSION >= 0x050700
     player->setSource(QUrl::fromLocalFile(filename));
 #else
-player->setMedia(QUrl::fromLocalFile(filename));
+    player->setMedia(QUrl::fromLocalFile(filename));
 #endif
-
     setWindowTitle(filename);
   }
 }
 
-//-------------------------------------------  player  ------------------------------------------------------------
-//-----------------------------------------------------------------------------------------------------------------
+//----------------------------------------  player  ---------------------------------------
+//-----------------------------------------------------------------------------------------
 void MainWindow::on_positionChanged(qint64 position)
 {
     progressBar->setValue(position);
     label_length->setText( second_to_minutes(position / 1000).append("/").append( second_to_minutes( (progressBar->maximum())/1000 ) ) );
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 QString MainWindow::second_to_minutes(int seconds)
 {
     int sec = seconds;
@@ -464,22 +454,18 @@ QString MainWindow::second_to_minutes(int seconds)
     return (mn.length() == 1 ? "0" + mn : mn ) + ":" + (sc.length() == 1 ? "0" + sc : sc);
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 void MainWindow::on_durationChanged(qint64 position)
 {
     progressBar->setMaximum(position);
 }
 
-//-----------------------------------------------------------------------------------------------------------------
+//-----------------------------------------------------------------------------------------
 void MainWindow::mediaStatuChngd(QMediaPlayer::MediaStatus state)
 {
   if(state == QMediaPlayer::EndOfMedia)
   {
-//    player->stop();
     stopClicked();
-//    if(ui->listWidget->count() >1)
-//    {
-      nextClicked();
-//    }
+    nextClicked();
   }
 }

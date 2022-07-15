@@ -5,6 +5,7 @@
 #include <QStringList>
 #include <QFileDialog>
 #include <QListView>
+#include <QDesktopWidget>
 
 #include <QMessageBox> // for debuging
 #include <QDebug>
@@ -19,6 +20,10 @@ EditForm::EditForm(QWidget *parent) :
 {
   ui->setupUi(this);
 
+  QRect desktopRect = QApplication::desktop()->availableGeometry(this);
+  QPoint center = desktopRect.center();
+  move(center.x() - width() * 0.5, center.y() - height() * 0.5);
+
   // Create actions for the toolbar, menu bar and tray/dock icon
   SetSignals();
 
@@ -31,7 +36,7 @@ EditForm::EditForm(QWidget *parent) :
   connect(ui->comboBox,&QComboBox::currentTextChanged, this,&EditForm::on_driveChanged);
 
   /** setup dir tree */
-  QString mPath="/";
+  QString mPath="/home";
   /** Dirs */
   dirModel = new QFileSystemModel(this);
   // Set filter
@@ -47,9 +52,7 @@ EditForm::EditForm(QWidget *parent) :
   fileModel = new QFileSystemModel(this);
   // Set filter
   fileModel->setFilter(QDir::NoDotAndDotDot | QDir::Files);
-  // QFileSystemModel requires root path
-//  fileModel->setRootPath(mPath);
-  fileModel->setRootPath(drives[0]);
+  fileModel->setRootPath(mPath);
 
   // Attach the file model to the view
   ui->listView->setModel(fileModel);
@@ -62,12 +65,7 @@ EditForm::EditForm(QWidget *parent) :
   ui->treeView->setColumnHidden(2,1);
   ui->treeView->setColumnHidden(3,1);
 
-  /** for sending data from this form to editform */
-  MainWindow *dialog = new MainWindow();
-  connect(dialog, SIGNAL(sendEditData(QStringList)), this, SLOT(recieveEditData(QStringList)));
-
   updateFilters();
-
 }
 
 EditForm::~EditForm()
@@ -91,6 +89,7 @@ void EditForm::SetSignals()
   connect(ui->bt_left, &QPushButton::released, this, &EditForm::bt_left_clicked);
 
   connect(ui->bt_ok, &QPushButton::released, this, &EditForm::bt_ok_clicked);
+  connect(ui->bt_cancel, &QPushButton::released, this, &EditForm::bt_cancel_clicked);
   connect(ui->bt_save, &QPushButton::released, this, &EditForm::bt_save_clicked);
 
   connect(ui->cb_mp3, &QPushButton::released, this, &EditForm::cb_mp3_clicked);
@@ -209,18 +208,6 @@ void EditForm::updateFilters()
   fileModel->setNameFilters(filters);
   fileModel->setNameFilterDisables(false);
 }
-
-//-----------------------------------------------------------------------------------------------------------------
-/** recieves playlist from main window */
-void EditForm::recieveEditData(QStringList dat)
-{
-  QMessageBox::warning(this,"Random Player","recieveEditData was called");
-  playlist.clear();
-  playlist=dat; // keep a copy of the playlist
-qDebug() << dat;
-  ui->listWidget->addItems(dat);
-}
-
 
 //-----------------------------------------------------------------------------------------------------------------
 void EditForm::bt_save_clicked()

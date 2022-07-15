@@ -31,9 +31,6 @@ private:
 
     void updateFilters();
 
-    //    QStringList  playlist;
-
-    /** setup button signals */
     void SetSignals();
 
 private slots:
@@ -53,7 +50,6 @@ private slots:
     void cb_midi_clicked();
     void cb_wave_clicked();
 
-    void recieveEditData(QStringList);
 
 signals:
     void sendData(QStringList);
