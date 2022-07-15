@@ -267,6 +267,7 @@ void MainWindow::editClicked()
 /** recieves playlist from editor */
 void MainWindow::printData(QStringList dat)
 {
+  stopClicked();
   playlist=dat; // keep a copy of the playlist
   ui->listWidget->clear();
   ui->listWidget2->clear();
@@ -305,7 +306,30 @@ void MainWindow::saveClicked()
 /** randomize now trigger */
 void MainWindow::randomClicked()
 {
-  QMessageBox::warning(this,"Random Player","the Randomize NOW was triggered");
+  stopClicked();
+//player->stop();
+  // let's not randomize the master playlist
+  ui->listWidget->clear();
+  ui->listWidget2->clear();
+  ui->listWidget->addItems(playlist);
+// remove song from listwidget randomly and add it to listwidget2
+  while(ui->listWidget->count())
+  {
+    srand(time(0));
+    int random=rand()%(ui->listWidget->count());
+    QListWidgetItem *item = ui->listWidget->takeItem(random);
+    ui->listWidget2->addItem(item->text());
+    delete item;
+  }
+
+// move list from listwidget2 to listwidget
+  while(ui->listWidget2->count())
+  {
+    QListWidgetItem *item = ui->listWidget2->takeItem(0);
+    ui->listWidget->addItem(item->text());
+    delete item;
+  }
+  loadPlayer();
 }
 
 //-----------------------------------------------------------------------------------------------------------------
@@ -362,7 +386,8 @@ bt_status=0;
 void MainWindow::nextClicked()
 {
 //  QMessageBox::warning(this,"Random Player","next button pressed");
-  player->stop();
+//  player->stop();
+    stopClicked();
 
   if(ui->listWidget->count() >1)
   {
@@ -371,7 +396,8 @@ void MainWindow::nextClicked()
     delete item;
     QString filename=ui->listWidget->item(0)->text();
     player->setSource(QUrl::fromLocalFile(filename));
-    player->play();
+//    player->play();
+    playClicked();
   }
   else
   {
@@ -395,7 +421,8 @@ void MainWindow::previousClicked()
 /** load the player with the first song */
 void MainWindow::loadPlayer()
 {
-  player->stop();
+//  player->stop();
+  stopClicked();
   if(ui->listWidget->count())
   {
     QString filename=ui->listWidget->item(0)->text();
@@ -435,7 +462,8 @@ void MainWindow::mediaStatuChngd(QMediaPlayer::MediaStatus state)
 {
   if(state == QMediaPlayer::EndOfMedia)
   {
-    player->stop();
+//    player->stop();
+    stopClicked();
 //    if(ui->listWidget->count() >1)
 //    {
       nextClicked();
