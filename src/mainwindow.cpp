@@ -122,6 +122,7 @@ void MainWindow::createToolBars()
   progressBar = new QSlider(Qt::Horizontal,this);
 
   label_length= new QLabel(this);
+  label_length->setStyleSheet("font-size: 9px;");
   label_length->setText("test message");
 
   horizontalGroupBox = new QGroupBox;

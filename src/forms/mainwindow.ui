@@ -43,9 +43,9 @@
     <property name="geometry">
      <rect>
       <x>1</x>
-      <y>55</y>
+      <y>81</y>
       <width>678</width>
-      <height>461</height>
+      <height>460</height>
      </rect>
     </property>
     <property name="autoFillBackground">
