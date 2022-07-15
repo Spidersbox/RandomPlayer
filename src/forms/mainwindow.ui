@@ -104,23 +104,14 @@
      <property name="alignment">
       <set>Qt::AlignCenter</set>
      </property>
-     <widget class="QListView" name="listView_2">
+     <widget class="QListWidget" name="listWidget2">
       <property name="geometry">
        <rect>
-        <x>0</x>
+        <x>5</x>
         <y>20</y>
-        <width>329</width>
+        <width>321</width>
         <height>432</height>
        </rect>
-      </property>
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Plain</enum>
       </property>
      </widget>
     </widget>

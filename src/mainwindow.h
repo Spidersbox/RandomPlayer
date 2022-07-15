@@ -6,6 +6,9 @@
 #include <QPushButton>
 #include <QListView>
 #include <QSlider>
+#include <QLabel>
+#include <QMediaPlayer>
+#include <QAudioOutput>
 
 #include "ui_mainwindow.h"
 
@@ -34,11 +37,14 @@ public:
 
 private:
   Ui::MainWindow *ui;
-
+  QMediaPlayer *player;
+  QAudioOutput *audioOutput;
 
   QGroupBox *horizontalGroupBox;
+  QGroupBox *progressGroupBox;
 
   QMenuBar *appMenuBar;
+  QLabel *label_length;
   QAction *openAction;
   QAction *quitAction;
 
@@ -64,6 +70,9 @@ private:
   QPushButton *previousButton;
 
   QSlider *progressBar;
+
+QString second_to_minutes(int seconds);
+
 
 
   /** Create the main UI actions. */
@@ -99,7 +108,13 @@ private slots:
   void nextClicked();
   void previousClicked();
 
+  void loadPlayer();
   void printData(QStringList);
+
+void on_positionChanged(qint64 position);
+void on_durationChanged(qint64 position);
+void mediaStatuChngd(QMediaPlayer::MediaStatus state);
+
 
 public slots:
 
