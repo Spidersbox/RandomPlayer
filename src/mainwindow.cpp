@@ -43,8 +43,12 @@ MainWindow::MainWindow(QWidget *parent)
   menuBar()->setNativeMenuBar(false);
 
   player = new QMediaPlayer;
+#if QT_VERSION >= 0x050700
   audioOutput = new QAudioOutput;
   player->setAudioOutput(audioOutput);
+#else
+//player->setMedia(QUrl(filename));
+#endif
   // ...
 
   connect(player,SIGNAL(positionChanged(qint64)) ,this,SLOT(on_positionChanged(qint64)));
@@ -395,7 +399,11 @@ void MainWindow::nextClicked()
     ui->listWidget2->addItem(item->text());
     delete item;
     QString filename=ui->listWidget->item(0)->text();
+#if QT_VERSION >= 0x050700
     player->setSource(QUrl::fromLocalFile(filename));
+#else
+player->setMedia(QUrl::fromLocalFile(filename));
+#endif
 //    player->play();
     playClicked();
   }
@@ -426,7 +434,11 @@ void MainWindow::loadPlayer()
   if(ui->listWidget->count())
   {
     QString filename=ui->listWidget->item(0)->text();
+ #if QT_VERSION >= 0x050700
     player->setSource(QUrl::fromLocalFile(filename));
+#else
+player->setMedia(QUrl::fromLocalFile(filename));
+#endif
 
     setWindowTitle(filename);
   }

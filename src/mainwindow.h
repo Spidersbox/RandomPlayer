@@ -9,7 +9,7 @@
 #include <QLabel>
 #include <QMediaPlayer>
 #include <QAudioOutput>
-
+#include <QtGlobal>
 #include "ui_mainwindow.h"
 
 
