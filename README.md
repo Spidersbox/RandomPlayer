@@ -8,7 +8,10 @@ I don't like most playlist editors, so I created my own. (located under options/
 <br>
 <br>
 
-### req qmediaplayer (for qt5)<br> 
+### reqires qmediaplayer<br> 
+tested on qt5 and qt6<br>
+<br>
+<br>
 
 #### if ERROR: Unknown module(s) in QT: multimedia<br>
 sudo apt-get install qtmultimedia5-dev<br>
