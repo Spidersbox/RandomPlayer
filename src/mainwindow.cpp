@@ -444,7 +444,8 @@ void MainWindow::loadPlayer()
 #else
     player->setMedia(QUrl::fromLocalFile(filename));
 #endif
-    setWindowTitle(filename);
+    QString file = filename.section("/",-1,-1);
+    setWindowTitle(file);
   }
 }
 
