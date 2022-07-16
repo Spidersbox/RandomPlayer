@@ -1,6 +1,9 @@
 # RandomPlayer<br>
 ## simple mp3 player<br>
+A basic mp3 player that will shuffle the list of songs, play through the list, then shuffle again and continue playing.<br>
+options to not shuffle, and/or not continuous loop.<br>
 <br>
+I don't like most playlist editors, so I created my own. (located under options/playlist)<br>
 <br>
 <br>
 <br>
