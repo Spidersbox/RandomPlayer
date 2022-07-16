@@ -390,7 +390,7 @@ void MainWindow::nextClicked()
 #else
 player->setMedia(QUrl::fromLocalFile(filename));
 #endif
-//    player->play();
+    loadPlayer();
     playClicked();
   }
   else
