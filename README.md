@@ -25,7 +25,9 @@ sudo apt-get install libqt5multimedia5-plugins<br>
 
 #### if Warning: "No decoder available for type 'audio/mpeg ...
 sudo apt-get install gstreamer1.0-libav<br>
-
+<br>
+you may also need<br>
+sudo apt install ubuntu-restricted-extras
 <br>
 <br>
 <br>
