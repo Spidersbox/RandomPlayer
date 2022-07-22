@@ -66,8 +66,8 @@ private:
 
   QSlider *progressBar;
 
-QString second_to_minutes(int seconds);
-
+  QString second_to_minutes(int seconds);
+  void setStatusInfo(const QString &info);
 
 
   /** Create the main UI actions. */
@@ -106,10 +106,10 @@ private slots:
   void loadPlayer();
   void printData(QStringList);
 
-void on_positionChanged(qint64 position);
-void on_durationChanged(qint64 position);
-void mediaStatuChngd(QMediaPlayer::MediaStatus state);
-
+  void on_positionChanged(qint64 position);
+  void on_durationChanged(qint64 position);
+  void mediaStatuChngd(QMediaPlayer::MediaStatus state);
+  void displayErrorMessage();
 
 public slots:
 

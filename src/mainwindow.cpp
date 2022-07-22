@@ -69,8 +69,9 @@ MainWindow::MainWindow(QWidget *parent)
   connect(player,SIGNAL(positionChanged(qint64)) ,this,SLOT(on_positionChanged(qint64)));
   connect(player,SIGNAL(durationChanged(qint64)) ,this,SLOT(on_durationChanged(qint64)));
   connect(player,SIGNAL(mediaStatusChanged(QMediaPlayer::MediaStatus)),this,SLOT(mediaStatuChngd(QMediaPlayer::MediaStatus)));
-
-
+#if QT_VERSION >= 0x060000
+  connect(player, &QMediaPlayer::errorChanged, this, &MainWindow::displayErrorMessage);
+#endif
 
 }
 
@@ -475,11 +476,99 @@ void MainWindow::on_durationChanged(qint64 position)
 }
 
 //-----------------------------------------------------------------------------------------
+void MainWindow::displayErrorMessage()
+{
+qDebug()<<"error info "<<player->error();
+  if (player->error() == QMediaPlayer::NoError)
+    return;
+//  setStatusInfo(player->errorString());
+}
+
+//-----------------------------------------------------------------------------------------
+void MainWindow::setStatusInfo(const QString &info)
+{
+qDebug()<<"status info "<<info;
+/*
+    m_statusInfo = info;
+
+    if (m_statusBar) {
+        m_statusBar->showMessage(m_trackInfo);
+        m_statusLabel->setText(m_statusInfo);
+    } else {
+        if (!m_statusInfo.isEmpty())
+            setWindowTitle(QString("%1 | %2").arg(m_trackInfo).arg(m_statusInfo));
+        else
+            setWindowTitle(m_trackInfo);
+    }
+*/
+}
+
+//-----------------------------------------------------------------------------------------
 void MainWindow::mediaStatuChngd(QMediaPlayer::MediaStatus state)
 {
-  if(state == QMediaPlayer::EndOfMedia)
+qDebug()<<"media state "<<state;
+#if QT_VERSION >= 0x060000
+//  bufferProgress
+  switch (state)
   {
-    stopClicked();
-    nextClicked();
+    case QMediaPlayer::BufferedMedia:
+      setStatusInfo(tr("Buffering %1%").arg(qRound(player->bufferProgress()*100.)));
+      break;
+    case QMediaPlayer::StalledMedia:
+      setStatusInfo(tr("Stalled %1%").arg(qRound(player->bufferProgress()*100.)));
+      break;
+    case QMediaPlayer::EndOfMedia:
+      QApplication::alert(this);
+      stopClicked();
+      nextClicked();
+      break;
+    case QMediaPlayer::InvalidMedia:
+      displayErrorMessage();
+      break;
+
+    case QMediaPlayer::UnknownMediaStatus:
+      break;
+    case QMediaPlayer::NoMedia:
+      break;
+    case QMediaPlayer::LoadingMedia:
+      break;
+    case QMediaPlayer::LoadedMedia:
+      break;
+    case QMediaPlayer::BufferingMedia:
+      break;
   }
+#else
+//  bufferStatus
+  switch (state)
+  {
+    case QMediaPlayer::BufferedMedia:
+//      setStatusInfo(tr("Buffering %1%").arg(qRound(player->bufferStatus()*1.)));
+      setStatusInfo("Buffered");
+      break;
+    case QMediaPlayer::StalledMedia:
+      setStatusInfo(tr("Stalled %1%").arg(qRound(player->bufferStatus()*1.)));
+      break;
+    case QMediaPlayer::EndOfMedia:
+      QApplication::alert(this);
+//      stopClicked();
+      nextClicked();
+      break;
+    case QMediaPlayer::InvalidMedia:
+      displayErrorMessage();
+      break;
+
+    case QMediaPlayer::UnknownMediaStatus:
+      break;
+    case QMediaPlayer::NoMedia:
+      break;
+    case QMediaPlayer::LoadingMedia:
+      break;
+    case QMediaPlayer::LoadedMedia:
+      break;
+    case QMediaPlayer::BufferingMedia:
+      setStatusInfo(tr("Buffering %1%").arg(qRound(player->bufferStatus()*1.)));
+      break;
+  }
+#endif
+
 }
