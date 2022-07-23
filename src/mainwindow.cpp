@@ -526,8 +526,8 @@ qDebug()<<"media state "<<state;
       displayErrorMessage();
       break;
 
-    case QMediaPlayer::UnknownMediaStatus:
-      break;
+//    case QMediaPlayer::UnknownMediaStatus:
+//      break;
     case QMediaPlayer::NoMedia:
       break;
     case QMediaPlayer::LoadingMedia:
