@@ -215,9 +215,7 @@ void MainWindow::createActions()
 void MainWindow::openClicked()
 {
   QString filename=QFileDialog::getOpenFileName(
-              this,
-              "Open Playlist",
-              "/",
+              this,"Open Playlist",qApp->applicationDirPath(),
               "playlist files (*.m3u)");
 
   QFile file(filename);
