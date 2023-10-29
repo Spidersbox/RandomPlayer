@@ -61,7 +61,7 @@ MainWindow::MainWindow(QWidget *parent)
   menuBar()->setNativeMenuBar(false);
 
   player = new QMediaPlayer;
-#if QT_VERSION >= 0x050700
+#if QT_VERSION >= 0x051500
   audioOutput = new QAudioOutput;
   player->setAudioOutput(audioOutput);
 #endif
@@ -384,7 +384,7 @@ void MainWindow::nextClicked()
     ui->listWidget2->addItem(item->text());
     delete item;
     QString filename=ui->listWidget->item(0)->text();
-#if QT_VERSION >= 0x050700
+#if QT_VERSION >= 0x051500
     player->setSource(QUrl::fromLocalFile(filename));
 #else
 player->setMedia(QUrl::fromLocalFile(filename));
@@ -438,7 +438,7 @@ void MainWindow::loadPlayer()
   if(ui->listWidget->count())
   {
     QString filename=ui->listWidget->item(0)->text();
- #if QT_VERSION >= 0x050700
+ #if QT_VERSION >= 0x051500
     player->setSource(QUrl::fromLocalFile(filename));
 #else
     player->setMedia(QUrl::fromLocalFile(filename));
